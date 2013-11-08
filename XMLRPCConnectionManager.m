@@ -16,7 +16,7 @@ static XMLRPCConnectionManager *sharedInstance = nil;
 }
 
 #pragma mark -
-
+/*
 + (id)allocWithZone: (NSZone *)zone {
     @synchronized(self) {
         if (!sharedInstance) {
@@ -27,7 +27,7 @@ static XMLRPCConnectionManager *sharedInstance = nil;
     }
     
     return nil;
-}
+}*/
 
 #pragma mark -
 
