@@ -67,7 +67,7 @@ static NSOperationQueue *parsingQueue;
 #endif
         
         if (myConnection) {
-            NSLog(@"The connection, %@, has been established!", myIdentifier);
+            //NSLog(@"The connection, %@, has been established!", myIdentifier);
 
             [self performSelector:@selector(timeoutExpired) withObject:nil afterDelay:[myRequest timeout]];
         } else {
