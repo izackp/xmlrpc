@@ -219,7 +219,9 @@ static NSOperationQueue *parsingQueue;
         parsingOperation = [NSBlockOperation blockOperationWithBlock:^{
             XMLRPCResponse *response = [[[XMLRPCResponse alloc] initWithData: myData] autorelease];
             XMLRPCRequest *request = [[myRequest retain] autorelease];
-
+            if (response.body.length < 1)
+                [self couldNotConnect];
+            else
             [[NSOperationQueue mainQueue] addOperation: [NSBlockOperation blockOperationWithBlock:^{
                [myDelegate request: request didReceiveResponse: response]; 
             }]];
@@ -228,20 +230,35 @@ static NSOperationQueue *parsingQueue;
         parsingOperation = [NSBlockOperation blockOperationWithBlock:^{
             XMLRPCResponse *response = [[XMLRPCResponse alloc] initWithData: myData];
             XMLRPCRequest *request = myRequest;
-
-            [[NSOperationQueue mainQueue] addOperation: [NSBlockOperation blockOperationWithBlock:^{
-                [myDelegate request: request didReceiveResponse: response];
-
-                [myManager closeConnectionForIdentifier: myIdentifier];
-            }]];
+            if (response.body.length < 1)
+                [self couldNotConnect];
+            else
+                [[NSOperationQueue mainQueue] addOperation: [NSBlockOperation blockOperationWithBlock:^{
+                    [myDelegate request: request didReceiveResponse: response];
+                    
+                    [myManager closeConnectionForIdentifier: myIdentifier];
+                }]];
         }];
 #endif
         
         [[XMLRPCConnection parsingQueue] addOperation: parsingOperation];
     }
     else {
-        [myManager closeConnectionForIdentifier: myIdentifier];
+        [self couldNotConnect];
     }
+}
+
+- (void)couldNotConnect {
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                              [myRequest URL], NSURLErrorFailingURLErrorKey,
+                              [[myRequest URL] absoluteString], NSURLErrorFailingURLStringErrorKey,
+                              //TODO not good to use hardcoded value for localized description
+                              @"Could not connect.", NSLocalizedDescriptionKey,
+                              nil];
+    
+    NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorResourceUnavailable userInfo:userInfo];
+    
+    [self connection:myConnection didFailWithError:error];
 }
 
 #pragma mark -
