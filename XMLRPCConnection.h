@@ -17,6 +17,7 @@
 #pragma mark -
 
 + (XMLRPCResponse *)sendSynchronousXMLRPCRequest: (XMLRPCRequest *)request error: (NSError **)error;
++ (void)setCredential:(NSURLCredential*)creds;
 
 #pragma mark -
 

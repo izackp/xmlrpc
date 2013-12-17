@@ -157,6 +157,7 @@ static const NSTimeInterval DEFAULT_TIMEOUT = 240;
     }
     
     [myRequest setHTTPBody: content];
+    [myRequest setCachePolicy:NSURLCacheStorageNotAllowed];
     
     return (NSURLRequest *)myRequest;
 }

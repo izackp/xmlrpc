@@ -83,6 +83,10 @@ static NSOperationQueue *parsingQueue;
 }
 
 #pragma mark -
+static NSURLCredential* sCurrentCreds = nil;
++ (void)setCredential:(NSURLCredential*)creds {
+    sCurrentCreds = creds;
+}
 
 + (XMLRPCResponse *)sendSynchronousXMLRPCRequest: (XMLRPCRequest *)request error: (NSError **)error {
     NSHTTPURLResponse *response = nil;
@@ -151,6 +155,15 @@ static NSOperationQueue *parsingQueue;
 #pragma mark -
 
 @implementation XMLRPCConnection (XMLRPCConnectionPrivate)
+
+- (void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+{
+    if (![[challenge protectionSpace] realm]) {
+        [challenge.sender performDefaultHandlingForAuthenticationChallenge:challenge];
+    } else if ([challenge previousFailureCount] < 1) {
+        [challenge.sender useCredential:sCurrentCreds forAuthenticationChallenge:challenge];
+    }
+}
 
 - (void)connection: (NSURLConnection *)connection didReceiveResponse: (NSURLResponse *)response {
     if([response respondsToSelector: @selector(statusCode)]) {
