@@ -163,6 +163,10 @@ static NSURLCredential* sCurrentCreds = nil;
     } else if ([challenge previousFailureCount] < 1) {
         [challenge.sender useCredential:sCurrentCreds forAuthenticationChallenge:challenge];
     }
+    else
+    {
+        [[challenge sender] cancelAuthenticationChallenge:challenge];
+    }
 }
 
 - (void)connection: (NSURLConnection *)connection didReceiveResponse: (NSURLResponse *)response {
