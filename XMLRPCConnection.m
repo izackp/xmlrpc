@@ -166,6 +166,7 @@ static NSURLCredential* sCurrentCreds = nil;
     else
     {
         [[challenge sender] cancelAuthenticationChallenge:challenge];
+        [myDelegate request:myRequest didCancelAuthenticationChallenge:challenge];
     }
 }
 
