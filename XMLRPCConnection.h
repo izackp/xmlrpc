@@ -1,18 +1,19 @@
 #import <Foundation/Foundation.h>
 #import "XMLRPCConnectionDelegate.h"
 
-@class XMLRPCConnectionManager, XMLRPCRequest, XMLRPCResponse;
+@class XMLRPCConnectionManager, XMLRPCRequest, XMLRPCResponse, DownloadOperation;
 
 @interface XMLRPCConnection : NSObject {
-    XMLRPCConnectionManager *myManager;
+    DownloadOperation *myManager;
     XMLRPCRequest *myRequest;
     NSString *myIdentifier;
     NSMutableData *myData;
     NSURLConnection *myConnection;
     id<XMLRPCConnectionDelegate> myDelegate;
+    bool invalid;
 }
 
-- (id)initWithXMLRPCRequest: (XMLRPCRequest *)request delegate: (id<XMLRPCConnectionDelegate>)delegate manager: (XMLRPCConnectionManager *)manager;
+- (id)initWithXMLRPCRequest: (XMLRPCRequest *)request delegate: (id<XMLRPCConnectionDelegate>)delegate operation:(DownloadOperation*)operation name:(NSString*)name;
 
 #pragma mark -
 
@@ -29,6 +30,7 @@
 
 #pragma mark -
 
+- (void)start;
 - (void)cancel;
 
 @end

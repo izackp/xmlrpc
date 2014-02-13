@@ -1,7 +1,7 @@
 #import "XMLRPCConnection.h"
-#import "XMLRPCConnectionManager.h"
 #import "XMLRPCRequest.h"
 #import "XMLRPCResponse.h"
+#import "DownloadOperation.h"
 #import "NSStringAdditions.h"
 
 static NSOperationQueue *parsingQueue;
@@ -41,13 +41,13 @@ static NSOperationQueue *parsingQueue;
 
 @implementation XMLRPCConnection
 
-- (id)initWithXMLRPCRequest: (XMLRPCRequest *)request delegate: (id<XMLRPCConnectionDelegate>)delegate manager: (XMLRPCConnectionManager *)manager {
+- (id)initWithXMLRPCRequest: (XMLRPCRequest *)request delegate: (id<XMLRPCConnectionDelegate>)delegate operation:(DownloadOperation*)operation name:(NSString*)name {
     self = [super init];
     if (self) {
 #if ! __has_feature(objc_arc)
-        myManager = [manager retain];
+        myManager = [operation retain];
         myRequest = [request retain];
-        myIdentifier = [[NSString stringByGeneratingUUID] retain];
+        myIdentifier = [name retain];
 #else
         myManager = manager;
         myRequest = request;
@@ -58,7 +58,7 @@ static NSOperationQueue *parsingQueue;
         myConnection = [[NSURLConnection alloc] initWithRequest: [request request] delegate: self startImmediately:NO];
         [myConnection scheduleInRunLoop:[NSRunLoop mainRunLoop]
                                 forMode:NSDefaultRunLoopMode];
-        [myConnection start];
+        
         
 #if ! __has_feature(objc_arc)
         myDelegate = [delegate retain];
@@ -72,6 +72,7 @@ static NSOperationQueue *parsingQueue;
             [self performSelector:@selector(timeoutExpired) withObject:nil afterDelay:[myRequest timeout]];
         } else {
             NSLog(@"The connection, %@, could not be established!", myIdentifier);
+            [myManager finish];
 #if ! __has_feature(objc_arc)
             [self release];
 #endif
@@ -80,6 +81,19 @@ static NSOperationQueue *parsingQueue;
     }
     
     return self;
+}
+
+- (void)start {
+    NSLog(@"Starting: %@", myIdentifier);
+    if (!myConnection)
+    {
+        NSLog(@"No Connection FInishd: %@", myIdentifier);
+        [myManager finish];
+        return;
+    }
+    
+    [myConnection start];
+    [self performSelector:@selector(timeoutExpired) withObject:nil afterDelay:[myRequest timeout]];
 }
 
 #pragma mark -
@@ -131,8 +145,8 @@ static NSURLCredential* sCurrentCreds = nil;
 
 - (void)cancel {
     [myConnection cancel];
-
     [self invalidateTimer];
+    [self connection:myConnection didFailWithError:[NSError errorWithDomain:@"NetObjectFactory" code:100 userInfo:@{NSLocalizedDescriptionKey:@"Connection has been closed"}]];
 }
 
 #pragma mark -
@@ -178,8 +192,9 @@ static NSURLCredential* sCurrentCreds = nil;
             NSError *error = [NSError errorWithDomain: @"HTTP" code: statusCode userInfo: nil];
             
             [myDelegate request: myRequest didFailWithError: error];
+            [myManager finish];
         } else if (statusCode == 304) {
-            [myManager closeConnectionForIdentifier: myIdentifier];
+            [myManager finish];
         }
     }
     
@@ -211,7 +226,7 @@ static NSURLCredential* sCurrentCreds = nil;
 
     [myDelegate request: request didFailWithError: error];
     
-    [myManager closeConnectionForIdentifier: myIdentifier];
+    [myManager finish];
 }
 
 #pragma mark -
@@ -226,6 +241,7 @@ static NSURLCredential* sCurrentCreds = nil;
 
 - (void)connection: (NSURLConnection *)connection didCancelAuthenticationChallenge: (NSURLAuthenticationChallenge *)challenge {
     [myDelegate request: myRequest didCancelAuthenticationChallenge: challenge];
+    [myManager finish];
 }
 
 - (void)connectionDidFinishLoading: (NSURLConnection *)connection {
@@ -241,7 +257,9 @@ static NSURLCredential* sCurrentCreds = nil;
                 [self couldNotConnect];
             else
             [[NSOperationQueue mainQueue] addOperation: [NSBlockOperation blockOperationWithBlock:^{
-               [myDelegate request: request didReceiveResponse: response]; 
+               [myDelegate request: request didReceiveResponse: response];
+                
+                [myManager finish];
             }]];
         }];
 #else
@@ -254,7 +272,7 @@ static NSURLCredential* sCurrentCreds = nil;
                 [[NSOperationQueue mainQueue] addOperation: [NSBlockOperation blockOperationWithBlock:^{
                     [myDelegate request: request didReceiveResponse: response];
                     
-                    [myManager closeConnectionForIdentifier: myIdentifier];
+                    [myManager finish];
                 }]];
         }];
 #endif
@@ -277,11 +295,14 @@ static NSURLCredential* sCurrentCreds = nil;
     NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorResourceUnavailable userInfo:userInfo];
     
     [self connection:myConnection didFailWithError:error];
+
 }
 
 #pragma mark -
 - (void)timeoutExpired
 {
+    if (invalid)
+        return;
     NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                               [myRequest URL], NSURLErrorFailingURLErrorKey,
                               [[myRequest URL] absoluteString], NSURLErrorFailingURLStringErrorKey,
@@ -296,6 +317,7 @@ static NSURLCredential* sCurrentCreds = nil;
 
 - (void)invalidateTimer
 {
+    invalid = true;
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(timeoutExpired) object:nil];
 }
 

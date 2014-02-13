@@ -1,6 +1,11 @@
 #import "XMLRPCConnectionManager.h"
 #import "XMLRPCConnection.h"
 #import "XMLRPCRequest.h"
+#import "DownloadOperation.h"
+
+@interface XMLRPCConnectionManager ()
+@property (strong, nonatomic) NSOperationQueue* connectionQueue;
+@end
 
 @implementation XMLRPCConnectionManager
 
@@ -9,25 +14,12 @@ static XMLRPCConnectionManager *sharedInstance = nil;
 - (id)init {
     self = [super init];
     if (self) {
-        myConnections = [[NSMutableDictionary alloc] init];
+        _connectionQueue = [[NSOperationQueue alloc] init];
+        [_connectionQueue setMaxConcurrentOperationCount:2];
     }
     
     return self;
 }
-
-#pragma mark -
-/*
-+ (id)allocWithZone: (NSZone *)zone {
-    @synchronized(self) {
-        if (!sharedInstance) {
-            sharedInstance = [super allocWithZone: zone];
-            
-            return sharedInstance;
-        }
-    }
-    
-    return nil;
-}*/
 
 #pragma mark -
 
@@ -43,55 +35,19 @@ static XMLRPCConnectionManager *sharedInstance = nil;
 
 #pragma mark -
 
-- (NSString *)spawnConnectionWithXMLRPCRequest: (XMLRPCRequest *)request delegate: (id<XMLRPCConnectionDelegate>)delegate {
-    XMLRPCConnection *newConnection = [[XMLRPCConnection alloc] initWithXMLRPCRequest: request delegate: delegate manager: self];
-#if ! __has_feature(objc_arc)
-    NSString *identifier = [[[newConnection identifier] retain] autorelease];
-#else
-    NSString *identifier = [newConnection identifier];
-#endif
-    
-    [myConnections setObject: newConnection forKey: identifier];
-    
-#if ! __has_feature(objc_arc)
-    [newConnection release];
-#endif
-    
-    return identifier;
+- (void)spawnConnectionWithXMLRPCRequest: (XMLRPCRequest *)request delegate: (id<XMLRPCConnectionDelegate>)delegate name:(NSString*)name {
+    DownloadOperation* operation = [DownloadOperation alloc];
+    XMLRPCConnection *newConnection = [[XMLRPCConnection alloc] initWithXMLRPCRequest: request delegate: delegate operation:operation name:name];
+    operation = [operation initWithConnection:newConnection];
+    [self.connectionQueue addOperation:operation];
 }
 
 #pragma mark -
-
-- (NSArray *)activeConnectionIdentifiers {
-    return [myConnections allKeys];
-}
-
-- (int)numberOfActiveConnections {
-    return (int)[myConnections count];
-}
-
-#pragma mark -
-
-- (XMLRPCConnection *)connectionForIdentifier: (NSString *)identifier {
-    return [myConnections objectForKey: identifier];
-}
-
-#pragma mark -
-
-- (void)closeConnectionForIdentifier: (NSString *)identifier {
-    XMLRPCConnection *selectedConnection = [self connectionForIdentifier: identifier];
-    
-    if (selectedConnection) {
-        [selectedConnection cancel];
-        
-        [myConnections removeObjectForKey: identifier];
-    }
-}
-
 - (void)closeConnections {
-    [[myConnections allValues] makeObjectsPerformSelector: @selector(cancel)];
-    
-    [myConnections removeAllObjects];
+    [self.connectionQueue cancelAllOperations];
+//    [[myConnections allValues] makeObjectsPerformSelector: @selector(cancel)];
+//    
+//    [myConnections removeAllObjects];
 }
 
 #pragma mark -
@@ -106,12 +62,6 @@ static XMLRPCConnectionManager *sharedInstance = nil;
 
 - (void)dealloc {
     [self closeConnections];
-    
-#if ! __has_feature(objc_arc)
-    [myConnections release];
-    
-    [super dealloc];
-#endif
 }
 
 @end

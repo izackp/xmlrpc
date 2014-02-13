@@ -4,28 +4,14 @@
 @class XMLRPCConnection, XMLRPCRequest;
 
 @interface XMLRPCConnectionManager : NSObject {
-    NSMutableDictionary *myConnections;
+    //NSMutableDictionary *myConnections;
 }
 
 + (XMLRPCConnectionManager *)sharedManager;
 
 #pragma mark -
 
-- (NSString *)spawnConnectionWithXMLRPCRequest: (XMLRPCRequest *)request delegate: (id<XMLRPCConnectionDelegate>)delegate;
-
-#pragma mark -
-
-- (NSArray *)activeConnectionIdentifiers;
-
-- (int)numberOfActiveConnections;
-
-#pragma mark -
-
-- (XMLRPCConnection *)connectionForIdentifier: (NSString *)identifier;
-
-#pragma mark -
-
-- (void)closeConnectionForIdentifier: (NSString *)identifier;
+- (void)spawnConnectionWithXMLRPCRequest: (XMLRPCRequest *)request delegate: (id<XMLRPCConnectionDelegate>)delegate name:(NSString*)name;
 
 - (void)closeConnections;
 

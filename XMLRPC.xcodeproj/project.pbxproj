@@ -16,7 +16,7 @@
 		07075BAE10C5FE3800589A27 /* AlternativeDateFormatsTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = 07075BAD10C5FE3800589A27 /* AlternativeDateFormatsTestCase.xml */; };
 		07452BE30E469C9000A57686 /* XMLRPCConnectionDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 07452BE20E469C9000A57686 /* XMLRPCConnectionDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		075137FB0E429E560019E4F6 /* XMLRPCConnectionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 075137F90E429E560019E4F6 /* XMLRPCConnectionManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		075137FC0E429E560019E4F6 /* XMLRPCConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 075137FA0E429E560019E4F6 /* XMLRPCConnectionManager.m */; };
+		075137FC0E429E560019E4F6 /* XMLRPCConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 075137FA0E429E560019E4F6 /* XMLRPCConnectionManager.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		0759A6F31143495E000DFE98 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0759A6F11143495E000DFE98 /* InfoPlist.strings */; };
 		0799AF270F6724E300B71B22 /* XMLRPC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* XMLRPC.framework */; };
 		0799AF5E0F67266400B71B22 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0799AF5D0F67266400B71B22 /* SenTestingKit.framework */; };
@@ -47,6 +47,10 @@
 		07EF453C0E721A5D009F2708 /* XMLRPCEventBasedParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 07EF453A0E721A5D009F2708 /* XMLRPCEventBasedParser.m */; };
 		1F59FCE216CADA75005AECF4 /* XMLRPCEncoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 2DCADED91529E06900B47A4F /* XMLRPCEncoder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2DCADEDB1529E24300B47A4F /* XMLRPCEncoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 2DCADED91529E06900B47A4F /* XMLRPCEncoder.h */; };
+		6AC6E20018ABB80A00A27381 /* DownloadOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AC6E1FE18ABB80A00A27381 /* DownloadOperation.h */; };
+		6AC6E20118ABB80A00A27381 /* DownloadOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AC6E1FE18ABB80A00A27381 /* DownloadOperation.h */; };
+		6AC6E20218ABB80A00A27381 /* DownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AC6E1FF18ABB80A00A27381 /* DownloadOperation.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		6AC6E20318ABB80A00A27381 /* DownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AC6E1FF18ABB80A00A27381 /* DownloadOperation.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 		903B0DC212F7581200BD6E09 /* NSStringAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 07B0C5F80E33A659006453B4 /* NSStringAdditions.h */; };
 		903B0DC312F7581200BD6E09 /* NSStringAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B0C5F90E33A659006453B4 /* NSStringAdditions.m */; };
@@ -55,7 +59,7 @@
 		903B0DC612F7581200BD6E09 /* XMLRPCConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 07B0C5FB0E33A659006453B4 /* XMLRPCConnection.h */; };
 		903B0DC712F7581200BD6E09 /* XMLRPCConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B0C5FC0E33A659006453B4 /* XMLRPCConnection.m */; };
 		903B0DC812F7581200BD6E09 /* XMLRPCConnectionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 075137F90E429E560019E4F6 /* XMLRPCConnectionManager.h */; };
-		903B0DC912F7581200BD6E09 /* XMLRPCConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 075137FA0E429E560019E4F6 /* XMLRPCConnectionManager.m */; };
+		903B0DC912F7581200BD6E09 /* XMLRPCConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 075137FA0E429E560019E4F6 /* XMLRPCConnectionManager.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		903B0DCA12F7581200BD6E09 /* XMLRPCDefaultEncoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 07B0C5FF0E33A659006453B4 /* XMLRPCDefaultEncoder.h */; };
 		903B0DCB12F7581200BD6E09 /* XMLRPCDefaultEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 07B0C6000E33A659006453B4 /* XMLRPCDefaultEncoder.m */; };
 		903B0DCC12F7581200BD6E09 /* XMLRPCEventBasedParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 07EF45390E721A5D009F2708 /* XMLRPCEventBasedParser.h */; };
@@ -131,6 +135,8 @@
 		0867D6A5FE840307C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		2DCADED91529E06900B47A4F /* XMLRPCEncoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XMLRPCEncoder.h; sourceTree = "<group>"; };
+		6AC6E1FE18ABB80A00A27381 /* DownloadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadOperation.h; sourceTree = "<group>"; };
+		6AC6E1FF18ABB80A00A27381 /* DownloadOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadOperation.m; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* XMLRPC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = XMLRPC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		903B0DB612F7574800BD6E09 /* libXMLRPC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libXMLRPC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2F7E79907B2D74100F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
@@ -306,6 +312,8 @@
 				07B0C6020E33A659006453B4 /* XMLRPCRequest.m */,
 				07B0C6030E33A659006453B4 /* XMLRPCResponse.h */,
 				07B0C6040E33A659006453B4 /* XMLRPCResponse.m */,
+				6AC6E1FE18ABB80A00A27381 /* DownloadOperation.h */,
+				6AC6E1FF18ABB80A00A27381 /* DownloadOperation.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -359,6 +367,7 @@
 				1F59FCE216CADA75005AECF4 /* XMLRPCEncoder.h in Headers */,
 				07B0C60A0E33A659006453B4 /* XMLRPCConnection.h in Headers */,
 				07452BE30E469C9000A57686 /* XMLRPCConnectionDelegate.h in Headers */,
+				6AC6E20018ABB80A00A27381 /* DownloadOperation.h in Headers */,
 				075137FB0E429E560019E4F6 /* XMLRPCConnectionManager.h in Headers */,
 				07B0C60E0E33A659006453B4 /* XMLRPCDefaultEncoder.h in Headers */,
 				07EF453B0E721A5D009F2708 /* XMLRPCEventBasedParser.h in Headers */,
@@ -379,6 +388,7 @@
 				903B0DC612F7581200BD6E09 /* XMLRPCConnection.h in Headers */,
 				903B0DC812F7581200BD6E09 /* XMLRPCConnectionManager.h in Headers */,
 				2DCADEDB1529E24300B47A4F /* XMLRPCEncoder.h in Headers */,
+				6AC6E20118ABB80A00A27381 /* DownloadOperation.h in Headers */,
 				903B0DCA12F7581200BD6E09 /* XMLRPCDefaultEncoder.h in Headers */,
 				903B0DCC12F7581200BD6E09 /* XMLRPCEventBasedParser.h in Headers */,
 				903B0DCE12F7581200BD6E09 /* XMLRPCEventBasedParserDelegate.h in Headers */,
@@ -565,6 +575,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				07B0C6080E33A659006453B4 /* NSStringAdditions.m in Sources */,
+				6AC6E20218ABB80A00A27381 /* DownloadOperation.m in Sources */,
 				07B0C60B0E33A659006453B4 /* XMLRPCConnection.m in Sources */,
 				075137FC0E429E560019E4F6 /* XMLRPCConnectionManager.m in Sources */,
 				07B0C60F0E33A659006453B4 /* XMLRPCDefaultEncoder.m in Sources */,
@@ -581,6 +592,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				903B0DC312F7581200BD6E09 /* NSStringAdditions.m in Sources */,
+				6AC6E20318ABB80A00A27381 /* DownloadOperation.m in Sources */,
 				903B0DC712F7581200BD6E09 /* XMLRPCConnection.m in Sources */,
 				903B0DC912F7581200BD6E09 /* XMLRPCConnectionManager.m in Sources */,
 				903B0DCB12F7581200BD6E09 /* XMLRPCDefaultEncoder.m in Sources */,
