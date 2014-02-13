@@ -15,7 +15,7 @@ static XMLRPCConnectionManager *sharedInstance = nil;
     self = [super init];
     if (self) {
         _connectionQueue = [[NSOperationQueue alloc] init];
-        [_connectionQueue setMaxConcurrentOperationCount:2];
+        [_connectionQueue setMaxConcurrentOperationCount:100];
     }
     
     return self;
@@ -34,7 +34,6 @@ static XMLRPCConnectionManager *sharedInstance = nil;
 }
 
 #pragma mark -
-
 - (void)spawnConnectionWithXMLRPCRequest: (XMLRPCRequest *)request delegate: (id<XMLRPCConnectionDelegate>)delegate name:(NSString*)name {
     DownloadOperation* operation = [DownloadOperation alloc];
     XMLRPCConnection *newConnection = [[XMLRPCConnection alloc] initWithXMLRPCRequest: request delegate: delegate operation:operation name:name];

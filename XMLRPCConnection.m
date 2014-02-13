@@ -84,10 +84,10 @@ static NSOperationQueue *parsingQueue;
 }
 
 - (void)start {
-    NSLog(@"Starting: %@", myIdentifier);
+    //NSLog(@"Starting: %@", myIdentifier);
     if (!myConnection)
     {
-        NSLog(@"No Connection FInishd: %@", myIdentifier);
+        NSLog(@"No Connection. Finished: %@", myIdentifier);
         [myManager finish];
         return;
     }
@@ -146,7 +146,7 @@ static NSURLCredential* sCurrentCreds = nil;
 - (void)cancel {
     [myConnection cancel];
     [self invalidateTimer];
-    [self connection:myConnection didFailWithError:[NSError errorWithDomain:@"NetObjectFactory" code:100 userInfo:@{NSLocalizedDescriptionKey:@"Connection has been closed"}]];
+    //[self connection:myConnection didFailWithError:[NSError errorWithDomain:@"NetObjectFactory" code:100 userInfo:@{NSLocalizedDescriptionKey:@"Connection has been closed"}]];
 }
 
 #pragma mark -
