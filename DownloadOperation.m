@@ -17,7 +17,7 @@
 @synthesize isExecuting;
 @synthesize isFinished;
 
-static int totalOperations = 0;
+//static int totalOperations = 0;
 
 #pragma mark Initialization
 
