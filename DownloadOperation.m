@@ -17,7 +17,7 @@
 @synthesize isExecuting;
 @synthesize isFinished;
 
-//static int totalOperations = 0;
+static int totalOperations = 0;
 
 #pragma mark Initialization
 
@@ -42,8 +42,8 @@
     
 
     [connection start];
-    //totalOperations += 1;
-    //NSLog(@"Total operations++: %i", totalOperations);
+//    totalOperations += 1;
+//    NSLog(@"Total operations++: %i", totalOperations);
 }
 
 - (BOOL) isConcurrent
@@ -57,10 +57,6 @@
         [self setIsExecuting:NO];
         [self setIsFinished:YES];
 //        totalOperations -= 1;
-//        if (totalOperations < 0)
-//        {
-//            [self stupid];
-//        }
 //        NSLog(@"Total operations--: %i", totalOperations);
     }
     else
@@ -70,11 +66,6 @@
     }
     
 }
-
-//- (void)stupid {
-//    totalOperations +=1;
-//    totalOperations -=1;
-//}
 
 - (void)cancel {
     [connection cancel];
